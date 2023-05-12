@@ -28,6 +28,11 @@
             var usuario = await _context.Usuarios.Where(usuario => usuario.Email == email && usuario.isActive == true).FirstOrDefaultAsync();
             return usuario;
         }
+        public async Task<Usuario> FindByIdUsuario(string Id)
+        {
+            var usuario = await _context.Usuarios.Where(usuario => usuario.Id.ToString().ToUpper().Contains(Id) && usuario.isActive == true).FirstOrDefaultAsync();
+            return usuario;
+        }
         public async Task<List<Rol>> GetRolesByUserIDAsync(Guid usuarioId)
         {
             var roles = await _context.Roles

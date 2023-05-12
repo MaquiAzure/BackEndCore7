@@ -26,6 +26,7 @@
             {
                 options.UseSqlServer(configuration.GetConnectionString("ConexionSql"));
             });
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
             services.AddScoped<ITokenService, TokenService>();

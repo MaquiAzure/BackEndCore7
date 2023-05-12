@@ -3,46 +3,46 @@
     using Application.Contracts.Repositories.Base;
     using Application.Contracts.Service;
     using MediatR;
-    public class EditarCommandHandler : IRequestHandler<EditarCommand, int>
+    using Domain.Entities;
+    using Application.Exception;
+    using AutoMapper;
+    public class EditarCommandHandler : IRequestHandler<EditarCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUserService;
 
-        public EditarCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService)
+        public EditarCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
         {
+            _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _tokenService = tokenService;
+            _currentUserService = currentUserService;
         }
-
-        public async Task<int> Handle(EditarCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(EditarCommand request, CancellationToken cancellationToken)
         {
-            //var usuario = await verificarEmailExiste(request.Email);
-            //await validarContraseña(usuario, request.Password);
-            //return await CreateAuthenticationResult(usuario!);
-            return 1;
+            verificarAutorizacionParaCambiarPerfil(request.IdUsuarioRoute);
+            var usuarioToUpdate = await obtenerUsuario(request.IdUsuarioRoute);
+            _mapper.Map(request, usuarioToUpdate, typeof(EditarCommand), typeof(Usuario));
+            _unitOfWork.UsuarioRepository.UpdateEntity(usuarioToUpdate);
+            await _unitOfWork.Complete();
+            return Unit.Value;
         }
-        //private async Task<Usuario> verificarEmailExiste(string email)
-        //{
-        //    var usuario = await _unitOfWork.UsuarioRepository.FindByEmailAsync(email);
-        //    if (usuario == null)
-        //    {
-        //        throw new AuthException("Credenciales son incorrectas", $"El usuario con email {email} no existe");
-        //    }
-        //    return usuario;
-        //}
-        //private async Task validarContraseña(Usuario usuario, string password)
-        //{
-        //    bool passwordIsValid = BCrypt.Net.BCrypt.Verify(password, usuario.PasswordHash);
-        //    if (!passwordIsValid)
-        //    {
-        //        throw new AuthException("Credenciales son incorrectas", $"El usuario {usuario.Email} no tiene la clave ingresada");
-        //    }
-        //}
-        //private async Task<AuthenticationResult> CreateAuthenticationResult(Usuario user)
-        //{
-        //    var token = await _tokenService.GenerateToken(user.Id, user.Email);
-        //    return new AuthenticationResult { IsAuthenticated = true, AccessToken = token };
-        //}
+        private void verificarAutorizacionParaCambiarPerfil(string idUsuarioToken)
+        {
+            var idUsuarioRoute = _currentUserService.UserId.ToUpper();
+            if (!idUsuarioToken.Contains(idUsuarioRoute))
+            {
+                throw new ApplicationException("No está autorizado para cambiar este usuario");
+            }
+        }
+        private async Task<Usuario> obtenerUsuario(string idUsuarioRoute)
+        {
+            var usuario = await _unitOfWork.UsuarioRepository.FindByIdUsuario(idUsuarioRoute);
+            if (usuario == null)
+            {
+                throw new NotFoundException($"No se encontro el usuario con Id: '{idUsuarioRoute}'");
+            }
+            return usuario;
+        }
     }
-
 }

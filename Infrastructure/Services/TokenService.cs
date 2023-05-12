@@ -47,9 +47,8 @@
             }
             var claims = new Claim[]
             {
-                //new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, userEmail)
+                new Claim("email", userEmail)
             }.Union(roleClaims);
 
             return claims;
@@ -137,7 +136,7 @@
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenData = tokenHandler.ReadJwtToken(token);
-            var emailClaim = tokenData.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email);
+            var emailClaim = tokenData.Claims.FirstOrDefault(c => c.Type == "email");
             if (emailClaim == null)
             {
                 return new TokenResult { IsValid = true, ErrorMessage = "No existe el correo en el claim" };
