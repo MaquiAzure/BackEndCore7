@@ -1,0 +1,18 @@
+﻿[
+  {
+    "Usuario": {
+      "Email": "maquisistemasAdmin@gmail.com"
+    },
+    "Rol": {
+      "Name": "Role_Master"
+    }
+  },
+  {
+    "Usuario": {
+      "Email": "maquisistemasAdmin@gmail.com"
+    },
+    "Rol": {
+      "Name": "Role_Usuario"
+    }
+  }
+]
