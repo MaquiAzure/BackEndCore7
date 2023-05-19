@@ -8,18 +8,18 @@
         {
             RuleFor(x => x.Email)
                 .NotNull()
-                .WithMessage(ValidationMessages.isRequiredMessage)
+                .WithMessage(ValidationMessages.RequiredMessage)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.isRequiredMessage)
+                .WithMessage(ValidationMessages.RequiredMessage)
                 .EmailAddress()
                 .WithMessage(ValidationMessages.EmailValidMessage)
                 .WithName("Email");
 
             RuleFor(x => x.Password)
                 .NotNull()
-                .WithMessage(ValidationMessages.isRequiredMessage)
+                .WithMessage(ValidationMessages.RequiredMessage)
                 .NotEmpty()
-                .WithMessage(ValidationMessages.isRequiredMessage)
+                .WithMessage(ValidationMessages.RequiredMessage)
                 .Must(ValidatorHelper.ValidatePassword)
                 .WithMessage(ValidationMessages.PasswordInvalidMessage)
                 .WithName("Password");

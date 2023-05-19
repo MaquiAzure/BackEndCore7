@@ -28,9 +28,9 @@
             var usuario = await _context.Usuarios.Where(usuario => usuario.Email == email && usuario.isActive == true).FirstOrDefaultAsync();
             return usuario;
         }
-        public async Task<Usuario> FindByIdUsuario(string Id)
+        public async Task<Usuario> FindByIdUsuario(Guid Id)
         {
-            var usuario = await _context.Usuarios.Where(usuario => usuario.Id.ToString().ToUpper().Contains(Id) && usuario.isActive == true).FirstOrDefaultAsync();
+            var usuario = await _context.Usuarios.Where(usuario => usuario.Id==Id && usuario.isActive == true).FirstOrDefaultAsync();
             return usuario;
         }
         public async Task<List<Rol>> GetRolesByUserIDAsync(Guid usuarioId)

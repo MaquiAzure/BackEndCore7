@@ -1,5 +1,5 @@
 ﻿namespace Application.Features.Usuario.Command.Editar
 {
     using MediatR;
-    public sealed record EditarCommand(string? IdUsuarioRoute,string Nombres, string Apellidos) : IRequest<Unit>;
+    public sealed record EditarCommand(Guid IdUsuarioRoute,string Nombres, string Apellidos) : IRequest<Unit>;
 }

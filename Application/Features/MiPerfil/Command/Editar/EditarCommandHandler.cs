@@ -27,15 +27,15 @@
             await _unitOfWork.Complete();
             return Unit.Value;
         }
-        private void verificarAutorizacionParaCambiarPerfil(string idUsuarioToken)
+        private void verificarAutorizacionParaCambiarPerfil(Guid idUsuarioToken)
         {
-            var idUsuarioRoute = _currentUserService.UserId.ToUpper();
-            if (!idUsuarioToken.Contains(idUsuarioRoute))
+            var idUsuarioRoute = Guid.Parse(_currentUserService.UserId);
+            if (idUsuarioToken!=idUsuarioRoute)
             {
                 throw new ApplicationException("No está autorizado para cambiar este usuario");
             }
         }
-        private async Task<Usuario> obtenerUsuario(string idUsuarioRoute)
+        private async Task<Usuario> obtenerUsuario(Guid idUsuarioRoute)
         {
             var usuario = await _unitOfWork.UsuarioRepository.FindByIdUsuario(idUsuarioRoute);
             if (usuario == null)

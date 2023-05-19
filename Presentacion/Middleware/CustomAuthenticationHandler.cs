@@ -39,10 +39,10 @@
             }
 
             var claims = new List<Claim>
-        {
+            {
             new Claim(ClaimTypes.NameIdentifier, tokenValidationResult.UserId),
             new Claim(ClaimTypes.Email, tokenValidationResult.Email)
-        };
+            };
 
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);

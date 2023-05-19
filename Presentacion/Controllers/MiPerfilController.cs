@@ -14,9 +14,9 @@
         [Authorize(AuthenticationSchemes = "CustomAuthentication")]
         [HttpPut("{Id}", Name = "EditarMiPerfil")]
         [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Unit>> EditarMiPeril([FromBody] EditarCommand command, [FromRoute] string Id)
+        public async Task<ActionResult<Unit>> EditarMiPeril([FromBody] EditarCommand command, [FromRoute] Guid Id)
         {
-            command = new EditarCommand(Id.ToUpper(), command.Nombres, command.Apellidos);
+            command = new EditarCommand(Id, command.Nombres, command.Apellidos);
             return await _mediator.Send(command);
         }
     }

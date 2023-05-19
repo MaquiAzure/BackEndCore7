@@ -5,7 +5,7 @@
     public interface IUsuarioRepository : IRepositoryBase<Usuario>
     {
         Task<Usuario> FindByEmailAsync(string email); 
-        Task<Usuario> FindByIdUsuario(string Id);
+        Task<Usuario> FindByIdUsuario(Guid Id);
         Task<bool> CheckPasswordAsync(Usuario usuario, string password);
         Task<List<Rol>> GetRolesByUserIDAsync(Guid usuarioId);
         Task AddToRoleAsync(Usuario usuario, string roleName);
